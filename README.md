@@ -79,6 +79,17 @@ no cache to wait out — `raw.githubusercontent.com` serves the committed file.
 Path 2 is the way back from a bad update, so it is never removed and its page
 stays published.
 
+### 🔴 The flasher is PINNED, and `make_release.py` does not move it
+
+`flash/manifest-<target>.json` names one specific version, and cutting a release
+leaves it alone. That is deliberate: **if a published release turns out not to
+boot, recovery must not install the very image that caused it.** The flasher
+serves a version known to come up on hardware.
+
+Move it only with `--set-flasher`, and only after that version has actually run
+on a machine. Every run prints what the flasher currently installs, so the pin is
+never invisible.
+
 ### What survives either path
 
 NVS (`ps3000`, `ps3000wifi`) and LittleFS are not written by either. **Load-cell

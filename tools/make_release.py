@@ -124,6 +124,9 @@ def main() -> None:
     ap.add_argument("--owner", default="El-Urfali")
     ap.add_argument("--repo", default="ps3000-releases")
     ap.add_argument("--root", default=".", help="ps3000-releases repo root")
+    ap.add_argument("--set-flasher", action="store_true",
+                    help="ALSO point the USB flasher page at this version. "
+                         "Off by default - see the block above the flasher manifest.")
     args = ap.parse_args()
 
     target = args.target or args.env
@@ -174,26 +177,45 @@ def main() -> None:
     )
 
     # ---- manifest the USB BROWSER FLASHER reads ----------------------------
-    # ESP Web Tools format. All four parts, standard offsets — this is a full
-    # serial upload, identical to what PlatformIO writes, and it resets the OTA
-    # boot selector back to app0 via boot_app0.bin.
-    web = {
-        "name": f"Power Serve — {target} {args.version}",
-        "version": args.version,
-        "new_install_prompt_erase": False,
-        "builds": [
-            {
-                "chipFamily": "ESP32",
-                "parts": [
-                    {"path": f"../{target}/{args.version}/{name}", "offset": off}
-                    for name, off in SERIAL_PARTS
-                ],
-            }
-        ],
-    }
-    (root / "flash" / f"manifest-{target}.json").write_text(
-        json.dumps(web, indent=2) + "\n", encoding="utf-8"
-    )
+    # 🔴 THE FLASHER IS PINNED, AND IS *NOT* UPDATED BY DEFAULT.
+    #
+    # It is the recovery path. If a published release turns out not to boot, the
+    # partner plugs in USB and re-flashes from that page - so the page must NOT
+    # serve the newest release, or recovery would install the very image that
+    # bricked the machine. It serves a version known to come up.
+    #
+    # Move it only with --set-flasher, and only once a version has actually run
+    # on hardware. ESP Web Tools format: all four parts at standard offsets, a
+    # full serial write identical to what PlatformIO does, and boot_app0.bin
+    # resets the OTA boot selector back to app0.
+    flash_manifest = root / "flash" / f"manifest-{target}.json"
+    pinned = None
+    if flash_manifest.is_file():
+        try:
+            pinned = json.loads(flash_manifest.read_text(encoding="utf-8")).get("version")
+        except (ValueError, OSError):
+            pinned = None
+
+    if args.set_flasher or not flash_manifest.is_file():
+        web = {
+            "name": f"Power Serve — {target} {args.version}",
+            "version": args.version,
+            "new_install_prompt_erase": False,
+            "builds": [
+                {
+                    "chipFamily": "ESP32",
+                    "parts": [
+                        {"path": f"../{target}/{args.version}/{name}", "offset": off}
+                        for name, off in SERIAL_PARTS
+                    ],
+                }
+            ],
+        }
+        flash_manifest.write_text(json.dumps(web, indent=2) + "\n", encoding="utf-8")
+        pinned = args.version
+        moved = "  <- MOVED by --set-flasher"
+    else:
+        moved = "  (unchanged - pass --set-flasher to move it)"
 
     print(f"target      {target}")
     print(f"version     {args.version}")
@@ -208,6 +230,7 @@ def main() -> None:
     print(f"md5         {md5}")
     print(f"sha256      {sha256}")
     print(f"written     {dest}")
+    print(f"USB flasher installs {pinned}{moved}")
     print()
     print("🔴 Check the build stamp against the boot banner of the machine you")
     print("   built this from before you push. It is the only proof of lineage.")
