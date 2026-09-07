@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Power Serve — USB Flasher</title>
+<style>
+  :root{
+    --bg:#0e1116; --card:#171c24; --line:#2a323d; --ink:#e6edf3;
+    --dim:#93a1b1; --accent:#4a9eff; --warn:#ffb02e; --stop:#ff4d4d; --ok:#3fbf6f;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+       font:15px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+  .wrap{max-width:760px;margin:0 auto;padding:32px 20px 72px}
+  h1{font-size:26px;margin:0 0 4px;letter-spacing:.3px}
+  .sub{color:var(--dim);margin:0 0 28px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:10px;
+        padding:20px 22px;margin:0 0 18px}
+  .card h2{font-size:13px;letter-spacing:1.4px;text-transform:uppercase;
+           color:var(--dim);margin:0 0 14px;font-weight:600}
+  .stop{border-left:3px solid var(--stop)}
+  .warn{border-left:3px solid var(--warn)}
+  .ok{border-left:3px solid var(--ok)}
+  ol,ul{margin:0;padding-left:20px}
+  li{margin:7px 0}
+  b{color:#fff}
+  code{background:#0b0e13;border:1px solid var(--line);border-radius:4px;
+       padding:1px 6px;font:13px/1.4 ui-monospace,Consolas,monospace}
+  .btnrow{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:6px}
+  esp-web-install-button{--esp-tools-button-color:#fff;
+      --esp-tools-button-text-color:#0e1116}
+  .unsupported{color:var(--warn)}
+  .foot{color:var(--dim);font-size:13px;margin-top:26px}
+  a{color:var(--accent)}
+  table{border-collapse:collapse;width:100%;font-size:14px}
+  td{padding:5px 0;border-bottom:1px solid var(--line);vertical-align:top}
+  td:first-child{color:var(--dim);width:150px}
+  tr:last-child td{border-bottom:0}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>Power Serve — USB Flasher</h1>
+  <p class="sub">One-time install of the firmware that adds the <b>Firmware Update</b> button.
+     After this, updates are done from the machine's own Setup page — no cable, no computer.</p>
+
+  <div class="card stop">
+    <h2>Before you plug anything in</h2>
+    <ul>
+      <li><b>Take the string off the machine and leave it off.</b> The board reboots
+          during this and the tension axis is released.</li>
+      <li><b>Motor and driver power OFF.</b> USB alone powers the controller board.</li>
+      <li>Do not close this tab or unplug the cable while it is writing.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>What you need</h2>
+    <table>
+      <tr><td>Browser</td><td><b>Chrome or Edge on a desktop or laptop.</b>
+        Safari, Firefox, iPad and Android phones cannot do this — they have no
+        Web Serial support.</td></tr>
+      <tr><td>Cable</td><td>USB cable from the laptop to the controller board.
+        <b>A charge-only cable will not work</b> — it must carry data.</td></tr>
+      <tr><td>Time</td><td>About two minutes.</td></tr>
+    </table>
+  </div>
+
+  <div class="card ok">
+    <h2>Install</h2>
+    <div class="btnrow">
+      <esp-web-install-button manifest="manifest-v1_partner.json">
+        <button slot="activate" style="font:600 15px system-ui;padding:11px 22px;
+          border:0;border-radius:7px;background:#fff;color:#0e1116;cursor:pointer">
+          Connect &amp; Install
+        </button>
+        <span slot="unsupported" class="unsupported">
+          This browser cannot talk to the board. Open this page in Chrome or Edge
+          on a laptop.
+        </span>
+        <span slot="not-allowed" class="unsupported">
+          This page must be opened over https:// to use the serial port.
+        </span>
+      </esp-web-install-button>
+    </div>
+    <ol style="margin-top:16px">
+      <li>Click <b>Connect &amp; Install</b>.</li>
+      <li>Pick the serial port in the browser's dialog. On Windows it is usually
+          <code>COM3</code>–<code>COM9</code>, described as <i>Silicon Labs</i> or
+          <i>CP210x</i>. If no port is listed, the cable is charge-only or the driver
+          is missing.</li>
+      <li>Choose <b>Install</b> and wait. Do not touch the cable.</li>
+      <li>When it finishes, the board reboots on its own.</li>
+    </ol>
+  </div>
+
+  <div class="card warn">
+    <h2>If the board will not enter flashing mode</h2>
+    <p style="margin:0">Hold the <b>BOOT</b> button down, tap <b>EN</b> (or <b>RST</b>),
+      then release <b>BOOT</b>, and click Install again. Some boards need this;
+      most do not.</p>
+  </div>
+
+  <div class="card ok">
+    <h2>After it reboots</h2>
+    <ol>
+      <li>Open <a href="http://PS3000.local/">http://PS3000.local/</a> on the tablet.</li>
+      <li>Tap the <b>&#9881;</b> cog in the top strip.</li>
+      <li>Scroll to <b>FIRMWARE</b>. It should show the version you just installed.</li>
+    </ol>
+    <p style="margin:12px 0 0;color:var(--dim)">
+      Your load-cell calibration, WiFi credentials and stored run logs are all
+      kept — this writes the program only, not the settings.</p>
+  </div>
+
+  <div class="card stop">
+    <h2>This page is also the way back</h2>
+    <p style="margin:0">If an update ever leaves the machine unable to start,
+      <b>bookmark this page and come back to it.</b> Plugging in the USB cable and
+      re-flashing from here recovers the machine from any bad firmware. It is the
+      reason the USB path stays available.</p>
+  </div>
+
+  <p class="foot">
+    Power Serve 1500 · V1 machine · flashing is served entirely by your browser —
+    nothing is uploaded anywhere, and the files come straight from this repository.
+  </p>
+</div>
+
+<script type="module"
+        src="https://unpkg.com/esp-web-tools@10.0.3/dist/web/install-button.js?module"></script>
+</body>
+</html>

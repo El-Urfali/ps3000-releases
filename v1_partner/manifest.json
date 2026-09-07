@@ -1,0 +1,14 @@
+{
+  "schema": 1,
+  "target": "v1_partner",
+  "version": "1.0.0",
+  "min_version": "0.0.0",
+  "url": "https://raw.githubusercontent.com/El-Urfali/ps3000-releases/main/v1_partner/1.0.0/firmware.bin",
+  "size": 1616048,
+  "md5": "49807c86fcaab9fb396b3c1aef54bc02",
+  "sha256": "bb63dc8a98bf71051fdb23c0c2e279efd51f62b08d351a4a8e21a239b7c346a5",
+  "build": "Sep  7 2026 09:39:38",
+  "commit": "9759f61",
+  "published": "2026-09-07T14:04:58Z",
+  "notes": "Adds the Firmware Update button to the Setup page, under FIRMWARE.\n\nNothing else changes. The machine behaves exactly as it does today \u2014 this\nrelease exists so that future ones can be installed without a cable."
+}
