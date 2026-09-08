@@ -1,14 +1,14 @@
 {
   "schema": 1,
   "target": "v1_partner",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "min_version": "0.0.0",
-  "url": "https://raw.githubusercontent.com/El-Urfali/ps3000-releases/main/v1_partner/1.2.1/firmware.bin",
-  "size": 1619488,
-  "md5": "5a227d7bb7ad5a3a458cb9a9a1c38c80",
-  "sha256": "cc7b3f68da677e0ac3e17b6fd54ba473e505ab85ae9219b4a8f7637c0bd961c7",
-  "build": "Sep  8 2026 14:48:26",
-  "commit": "c6afc76",
-  "published": "2026-09-08T18:50:28Z",
-  "notes": "Version number only. Nothing in the machine's behaviour changes.\n\nPublished so the Firmware Update button can be proven end to end on the real\nmachine \u2014 check, download, verify, restart \u2014 before it is ever needed for a\nreal fix."
+  "url": "https://raw.githubusercontent.com/El-Urfali/ps3000-releases/main/v1_partner/1.2.2/firmware.bin",
+  "size": 1620608,
+  "md5": "daef3c9c5ec10f640cb0eefd2dba532a",
+  "sha256": "441e94f732ee569f554671876381f8ad637bd1e8eb11e4994c32c70b91f38df2",
+  "build": "Sep  8 2026 16:04:13",
+  "commit": "33d0d95",
+  "published": "2026-09-08T20:06:00Z",
+  "notes": "Fixes the Firmware Update card getting stuck on \"Restarting\".\n\nThe update itself always worked \u2014 the card simply stopped watching one moment\ntoo early and never noticed the machine come back. It now waits through the\nrestart, says so while it waits, and reloads itself onto the new version.\n\nAlso fixes the Setup page sometimes still showing the old layout right after an\nupdate, on a tablet that had cached it.\n\nYour calibration, WiFi settings and saved run logs are kept."
 }
