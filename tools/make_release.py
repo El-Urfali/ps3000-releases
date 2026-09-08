@@ -57,6 +57,38 @@ def digest(path: Path):
     return size, md5.hexdigest(), sha.hexdigest()
 
 
+def verify_identity(firmware: Path, version: str, target: str) -> None:
+    """Refuse to publish an image that does not contain this version and target.
+
+    🔴 FOUND 2026-09-08, AT THE PARTNER'S SHOP. PS_FW_VERSION lives in
+    targets/<target>.h, which reaches the compiler through `#include PS_TARGET`
+    - a MACRO include. PlatformIO's dependency finder cannot follow it, so the
+    target header is not in the build graph: editing it changes nothing that
+    triggers a rebuild. `pio run` answered SUCCESS in 3.26 seconds and left the
+    previous binary on disk, still carrying the previous version.
+
+    Published unchecked, that binary would have been offered to the machine as a
+    newer version, installed, rebooted reporting the OLD version, and offered
+    again - a permanent update loop, from a release that behaved perfectly.
+
+    Run `pio run -e <env> -t clean` before cutting a release. This check is what
+    catches it when someone does not.
+    """
+    blob = firmware.read_bytes()
+    missing = [what for what, tok in (("version " + version, version.encode() + b"\x00"),
+                                      ("target " + target,  target.encode() + b"\x00"))
+               if tok not in blob]
+    if missing:
+        sys.exit(
+            "\n\U0001f534 REFUSING TO PUBLISH - the image does not contain "
+            + " or ".join(missing) + ".\n"
+            "   " + str(firmware) + "\n"
+            "   Almost certainly a stale incremental build: editing targets/*.h does\n"
+            "   not trigger a PlatformIO rebuild, because PS_TARGET is a macro include.\n"
+            "   Fix:  pio run -e <env> -t clean   then build again, then re-run this.\n"
+        )
+
+
 def find_boot_app0(explicit: str | None) -> Path:
     if explicit:
         p = Path(explicit)
@@ -137,6 +169,10 @@ def main() -> None:
 
     dest = root / target / args.version
     dest.mkdir(parents=True, exist_ok=True)
+
+    # 🔴 Before anything is copied: does this image actually say what we are
+    # about to publish about it? See verify_identity().
+    verify_identity(build / "firmware.bin", args.version, target)
 
     # ---- collect the four images -------------------------------------------
     for name, _ in SERIAL_PARTS:

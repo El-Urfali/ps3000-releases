@@ -1,14 +1,14 @@
 {
   "schema": 1,
   "target": "v1_partner",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "min_version": "0.0.0",
-  "url": "https://raw.githubusercontent.com/El-Urfali/ps3000-releases/main/v1_partner/1.2.0/firmware.bin",
+  "url": "https://raw.githubusercontent.com/El-Urfali/ps3000-releases/main/v1_partner/1.2.1/firmware.bin",
   "size": 1619488,
-  "md5": "ec689aa9c1e4665c15f17494c4116d20",
-  "sha256": "7e4da1f253eb708bf0ce06d90498ba2bdcaf708b391eb5947844864fceb360bc",
-  "build": "Sep  8 2026 14:28:19",
-  "commit": "406292a",
-  "published": "2026-09-08T18:42:32Z",
-  "notes": "Adds the Firmware Update button to the Setup page, under FIRMWARE.\n\nFrom here on the machine can update itself over shop WiFi: Setup, then\nFIRMWARE, then Check for update. No cable and no visit.\n\nThe Setup page's DIAGNOSTICS panel is gone. Nothing was lost \u2014 every number it\nshowed is still at http://PS3000.local/status.\n\nEverything the machine does is unchanged. PARK, the 50 / 100 / 300 tension\npresets and the conditioning cycle all behave exactly as they do today.\n\nYour load-cell calibration, pedal calibration, WiFi settings and saved run logs\nare kept."
+  "md5": "5a227d7bb7ad5a3a458cb9a9a1c38c80",
+  "sha256": "cc7b3f68da677e0ac3e17b6fd54ba473e505ab85ae9219b4a8f7637c0bd961c7",
+  "build": "Sep  8 2026 14:48:26",
+  "commit": "c6afc76",
+  "published": "2026-09-08T18:50:28Z",
+  "notes": "Version number only. Nothing in the machine's behaviour changes.\n\nPublished so the Firmware Update button can be proven end to end on the real\nmachine \u2014 check, download, verify, restart \u2014 before it is ever needed for a\nreal fix."
 }
