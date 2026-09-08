@@ -1,3 +1,25 @@
 __pycache__/
 *.pyc
 .DS_Store
+
+# 🔴 THIS REPO IS PUBLIC AND IT IS BINARIES AND NOTES ONLY.
+#
+# 2026-09-08: `git add -A` swept two files pulled off the partner's machine
+# into a published commit - a conditioning CSV and a /logstatus dump. Their
+# contents were harmless, which was luck, not process. A full flash dump or a
+# /status JSON is neither: NVS carries the owner's WiFi password and their
+# load-cell calibration.
+#
+# Machine data is captured into ps3000/_dumps/, which is ignored there. Nothing
+# pulled off a machine belongs here, ever.
+*.csv
+*.bin.gz
+status_*.json
+logstatus_*.txt
+cond_*.csv
+creep_*.csv
+partner_*.bin
+_dumps/
+
+# The releases themselves are tracked deliberately - do not let a broad *.bin
+# rule near this repo. Publishing a release means committing four .bin files.

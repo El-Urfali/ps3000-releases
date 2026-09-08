@@ -9,6 +9,6 @@
   "sha256": "441e94f732ee569f554671876381f8ad637bd1e8eb11e4994c32c70b91f38df2",
   "build": "Sep  8 2026 16:04:13",
   "commit": "33d0d95",
-  "published": "2026-09-08T20:06:00Z",
+  "published": "2026-09-08T20:19:56Z",
   "notes": "Fixes the Firmware Update card getting stuck on \"Restarting\".\n\nThe update itself always worked \u2014 the card simply stopped watching one moment\ntoo early and never noticed the machine come back. It now waits through the\nrestart, says so while it waits, and reloads itself onto the new version.\n\nAlso fixes the Setup page sometimes still showing the old layout right after an\nupdate, on a tablet that had cached it.\n\nYour calibration, WiFi settings and saved run logs are kept."
 }
